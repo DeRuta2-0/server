@@ -51,9 +51,10 @@ public class UserController {
 
     @GetMapping("/contacts")
     public Set<DataUser> getContacts() {
+        System.out.println("Called contacts");
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         if (a != null) {
-            User loggedUser = userService.findByUsername(((User)a.getPrincipal()).getUsername());
+            User loggedUser = userService.findByUsername((String)a.getPrincipal());
             return loggedUser.getContacts().stream().map(c -> new DataUser(c.getContact().getId(), c.getContact().getUsername(), c.getContact().getCoordinates(), c.getPictureUpdated())).collect(Collectors.toSet());
         }
         return new HashSet<>();
