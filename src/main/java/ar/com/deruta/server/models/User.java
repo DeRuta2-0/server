@@ -26,7 +26,9 @@ public class User implements UserDetails {
     @Embedded
     private Coordinates coordinates;
 
-    private Date lastUpdated;
+    private Date coordinatesLastUpdated;
+
+    private Date pictureLastUpdated;
 
     @OneToMany(mappedBy = "user")
     private Set<Contact> contacts;
@@ -103,11 +105,19 @@ public class User implements UserDetails {
         this.coordinates = coordinates;
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public Date getCoordinatesLastUpdated() {
+        return coordinatesLastUpdated;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setCoordinatesLastUpdated(Date coordinatesLastUpdated) {
+        this.coordinatesLastUpdated = coordinatesLastUpdated;
+    }
+
+    public Date getPictureLastUpdated() {
+        return pictureLastUpdated;
+    }
+
+    public void setPictureLastUpdated(Date pictureLastUpdated) {
+        this.pictureLastUpdated = pictureLastUpdated;
     }
 }

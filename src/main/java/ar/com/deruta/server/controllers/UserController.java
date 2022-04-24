@@ -66,7 +66,7 @@ public class UserController {
         if (a != null) {
             User loggedUser = userService.findByUsername(((User)a.getPrincipal()).getUsername());
             loggedUser.setCoordinates(coordinates);
-            loggedUser.setLastUpdated(new Date());
+            loggedUser.setCoordinatesLastUpdated(new Date());
             userService.save(loggedUser);
         }
     }
