@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,24 +47,38 @@ public class UserController {
     }
 
     @GetMapping("/contacts")
-    public Set<DataUser> getContacts() {
-        System.out.println("Called contacts");
+    public List<DataUser> getContacts() {
+        List<DataUser> contacts = new ArrayList<>();
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         if (a != null) {
             User loggedUser = userService.findByUsername((String)a.getPrincipal());
-            return loggedUser.getContacts().stream().map(c -> new DataUser(c.getContact().getId(), c.getContact().getUsername(), c.getContact().getCoordinates(), c.getPictureUpdated())).collect(Collectors.toSet());
+            contacts.add(new DataUser(loggedUser.getId(), loggedUser.getUsername(), loggedUser.getCoordinates(), false, loggedUser.getPictureLastUpdated().getTime()));
+            contacts.addAll(loggedUser.getContacts().stream().map(c -> new DataUser(c.getContact().getId(), c.getContact().getUsername(), c.getContact().getCoordinates(), c.getPictureUpdated(), c.getContact().getPictureLastUpdated() != null ? c.getContact().getPictureLastUpdated().getTime() : null)).collect(Collectors.toSet()));
         }
-        return new HashSet<>();
+        return contacts;
     }
 
     @PostMapping("/lastLocalization")
     public void lastLocalization(@RequestBody Coordinates coordinates) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         if (a != null) {
-            User loggedUser = userService.findByUsername(((User)a.getPrincipal()).getUsername());
+            User loggedUser = userService.findByUsername((String)a.getPrincipal());
             loggedUser.setCoordinates(coordinates);
             loggedUser.setCoordinatesLastUpdated(new Date());
             userService.save(loggedUser);
         }
+    }
+
+    @PostMapping("/pictureUpdated")
+    public Long pictureUpdated() {
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        if (a != null) {
+            User loggedUser = userService.findByUsername((String)a.getPrincipal());
+            Date now = new Date();
+            loggedUser.setPictureLastUpdated(now);
+            userService.save(loggedUser);
+            return now.getTime();
+        }
+        return null;
     }
 }

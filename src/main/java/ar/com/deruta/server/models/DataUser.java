@@ -2,18 +2,22 @@ package ar.com.deruta.server.models;
 
 import ar.com.deruta.server.models.utils.Coordinates;
 
+import java.util.Date;
+
 public class DataUser {
 
     private Long id;
     private String username;
     private Coordinates coordinates;
     private Boolean pictureUpdated;
+    private Long pictureLastUpdated;
 
-    public DataUser(Long id, String username, Coordinates coordinates, Boolean pictureUpdated) {
+    public DataUser(Long id, String username, Coordinates coordinates, Boolean pictureUpdated, Long pictureLastUpdated) {
         this.id = id;
         this.username = username;
         this.coordinates = coordinates;
         this.pictureUpdated = pictureUpdated;
+        this.pictureLastUpdated = pictureLastUpdated;
     }
 
     public Long getId() {
@@ -46,5 +50,13 @@ public class DataUser {
 
     public void setPictureUpdated(Boolean pictureUpdated) {
         this.pictureUpdated = pictureUpdated;
+    }
+
+    public Long getPictureLastUpdated() {
+        return pictureLastUpdated;
+    }
+
+    public void setPictureLastUpdated(Long pictureLastUpdated) {
+        this.pictureLastUpdated = pictureLastUpdated;
     }
 }
