@@ -1,15 +1,17 @@
 package ar.com.deruta.server.controllers;
 
-import ar.com.deruta.server.models.Picture;
-import ar.com.deruta.server.models.Place;
+import ar.com.deruta.server.models.*;
 import ar.com.deruta.server.models.enums.Repository;
 import ar.com.deruta.server.models.utils.Coordinates;
 import ar.com.deruta.server.services.PlaceService;
+import ar.com.deruta.server.services.PlaceTypeService;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/place")
@@ -24,6 +27,9 @@ public class PlaceController {
 
     @Autowired
     private PlaceService placeService;
+
+    @Autowired
+    private PlaceTypeService placeTypeService;
 
     @GetMapping
     public List<Place> getAll() {
@@ -34,7 +40,17 @@ public class PlaceController {
     public Place save(@RequestBody Place place) {
         return placeService.save(place);
     }
-
+/*
+    @GetMapping("")
+    public List<Place> getPlaces() {
+        List<Place> places = new ArrayList<>();
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        if (a != null) {
+            places.addAll(placeService.getAll());
+        }
+        return places;
+    }
+*/
     //151020
     @GetMapping("/ioverlander/{to}")
     public void saveFromIoverlander (@PathVariable Long to) {
@@ -70,7 +86,14 @@ public class PlaceController {
                 place.setId(id);
                 place.setRepository(Repository.IOVERLANDER);
                 place.setName(doc.getElementsByTag("h1").get(0).text().split("\\|")[0].trim());
-                place.setType(doc.getElementsByTag("h1").get(0).text().split("\\|")[1].trim());
+                String placeTypeString = doc.getElementsByTag("h1").get(0).text().split("\\|")[1].trim();
+                PlaceType placeType = placeTypeService.findByName(placeTypeString);
+                if (placeType == null) {
+                    placeType = new PlaceType();
+                    placeType.setName(placeTypeString);
+                    placeType = placeTypeService.save(placeType);
+                }
+                place.setType(placeType);
                 place.setCountry(doc.getElementById("place_nearby_div").text().trim());
 
                 Elements details = doc.getElementsByClass("placeContent").get(0).getElementsByTag("tbody").get(0).getElementsByTag("tr");
@@ -114,7 +137,14 @@ public class PlaceController {
             place.setId(id);
             place.setRepository(Repository.IOVERLANDER);
             place.setName(doc.getElementsByTag("h1").get(0).text().split("\\|")[0].trim());
-            place.setType(doc.getElementsByTag("h1").get(0).text().split("\\|")[1].trim());
+            String placeTypeString = doc.getElementsByTag("h1").get(0).text().split("\\|")[1].trim();
+            PlaceType placeType = placeTypeService.findByName(placeTypeString);
+            if (placeType == null) {
+                placeType = new PlaceType();
+                placeType.setName(placeTypeString);
+                placeType = placeTypeService.save(placeType);
+            }
+            place.setType(placeType);
             place.setCountry(doc.getElementById("place_nearby_div").text().trim());
 
             Elements details = doc.getElementsByClass("placeContent").get(0).getElementsByTag("tbody").get(0).getElementsByTag("tr");

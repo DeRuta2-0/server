@@ -24,7 +24,9 @@ public class Place {
     @NotNull
     private String name;
 
-    private String type;
+    @OneToOne
+    @JoinColumn(name = "type_id", referencedColumnName = "id")
+    private PlaceType type;
 
     private String country;
 
@@ -78,11 +80,11 @@ public class Place {
         this.name = name;
     }
 
-    public String getType() {
+    public PlaceType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(PlaceType type) {
         this.type = type;
     }
 
