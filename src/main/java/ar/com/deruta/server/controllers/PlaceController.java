@@ -33,6 +33,7 @@ public class PlaceController {
 
     @GetMapping
     public List<Place> getAll() {
+        System.out.println("getPlaces");
         return placeService.getAll();
     }
 
@@ -40,17 +41,7 @@ public class PlaceController {
     public Place save(@RequestBody Place place) {
         return placeService.save(place);
     }
-/*
-    @GetMapping("")
-    public List<Place> getPlaces() {
-        List<Place> places = new ArrayList<>();
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        if (a != null) {
-            places.addAll(placeService.getAll());
-        }
-        return places;
-    }
-*/
+
     //151020
     @GetMapping("/ioverlander/{to}")
     public void saveFromIoverlander (@PathVariable Long to) {

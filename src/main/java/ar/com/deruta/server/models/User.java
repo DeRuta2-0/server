@@ -1,6 +1,8 @@
 package ar.com.deruta.server.models;
 
 import ar.com.deruta.server.models.utils.Coordinates;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,6 +30,7 @@ public class User implements UserDetails {
 
     private Date coordinatesLastUpdated;
 
+    @CreationTimestamp
     private Date pictureLastUpdated;
 
     @OneToMany(mappedBy = "user")

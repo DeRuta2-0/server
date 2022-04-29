@@ -6,7 +6,8 @@ import ar.com.deruta.server.models.utils.Coordinates;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,7 +36,7 @@ public class Place {
 
     @ElementCollection
     @CollectionTable(name = "place_x_picture", joinColumns = {@JoinColumn(name = "place_id", referencedColumnName = "id"), @JoinColumn(name = "place_repository", referencedColumnName = "repository")})
-    private Set<Picture> pictures = new HashSet<>();
+    private List<Picture> pictures = new ArrayList<>();
 
     private Boolean deletionFlag = false;
 
@@ -104,11 +105,11 @@ public class Place {
         this.description = description;
     }
 
-    public Set<Picture> getPictures() {
+    public List<Picture> getPictures() {
         return pictures;
     }
 
-    public void setPictures(Set<Picture> pictures) {
+    public void setPictures(List<Picture> pictures) {
         this.pictures = pictures;
     }
 
