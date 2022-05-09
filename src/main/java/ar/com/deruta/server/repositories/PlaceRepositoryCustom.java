@@ -7,11 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface PlaceRepository extends JpaRepository<Place, Long>, PlaceRepositoryCustom {
+public interface PlaceRepositoryCustom {
 
-    List<Place> findByDeletionFlag(Boolean deletionFlag);
-
-    Place findPlaceByIdAndRepository(Long id, ar.com.deruta.server.models.enums.Repository repository);
+    List<Place> findByRegion(Region region);
 
 }

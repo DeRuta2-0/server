@@ -2,6 +2,7 @@ package ar.com.deruta.server.services;
 
 import ar.com.deruta.server.models.Place;
 import ar.com.deruta.server.models.enums.Repository;
+import ar.com.deruta.server.models.utils.Region;
 import ar.com.deruta.server.repositories.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class PlaceService {
 
     public Place findPlaceByIdAndRepository(Long id, Repository repository) {
         return placeRepository.findPlaceByIdAndRepository(id, repository);
+    }
+
+    public List<Place> findByRegion(Region region) {
+        return placeRepository.findByRegion(region);
     }
 
 }

@@ -6,6 +6,7 @@ import ar.com.deruta.server.models.PlacePreview;
 import ar.com.deruta.server.models.PlaceType;
 import ar.com.deruta.server.models.enums.Repository;
 import ar.com.deruta.server.models.utils.Coordinates;
+import ar.com.deruta.server.models.utils.Region;
 import ar.com.deruta.server.services.PlaceService;
 import ar.com.deruta.server.services.PlaceTypeService;
 import org.jsoup.HttpStatusException;
@@ -50,6 +51,15 @@ public class PlaceController {
         Place place = placeService.findPlaceByIdAndRepository(Long.valueOf(id.split("-")[0]), Repository.valueOf(id.split("-")[1]));
         System.out.println("getPlace elapsed: " + (new Date().getTime() - t) + "ms");
         return place;
+    }
+
+    @PostMapping("/getByRegion")
+    public List<Place> getByRegion (@RequestBody Region region) {
+        System.out.println("getByRegion init region: " + region);
+        long t = new Date().getTime();
+        List<Place> places = placeService.findByRegion(region);
+        System.out.println("getByRegion elapsed: " + (new Date().getTime() - t) + "ms, results: " + places.size());
+        return places;
     }
 
     @PostMapping
