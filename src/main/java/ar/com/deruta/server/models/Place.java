@@ -38,7 +38,7 @@ public class Place {
     @CollectionTable(name = "place_x_picture", joinColumns = {@JoinColumn(name = "place_id", referencedColumnName = "id"), @JoinColumn(name = "place_repository", referencedColumnName = "repository")})
     private List<Picture> pictures = new ArrayList<>();
 
-    private Boolean deletionFlag = false;
+    private Boolean deletionFlag = true;
 
     @NotNull
     private String lastVisited;

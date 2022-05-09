@@ -21,4 +21,8 @@ public class PlaceService {
         return placeRepository.save(place);
     }
 
+    public List<Place> findByDeletionFlag(Boolean deletionFlag) {
+        return placeRepository.findByDeletionFlag(deletionFlag);
+    }
+
 }

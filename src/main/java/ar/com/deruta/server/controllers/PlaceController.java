@@ -34,8 +34,11 @@ public class PlaceController {
 
     @GetMapping
     public List<Place> getAll() {
-        System.out.println("getPlaces");
-        return placeService.getAll();
+        System.out.println("getPlaces init");
+        long t = new Date().getTime();
+        List<Place> places = placeService.findByDeletionFlag(false);
+        System.out.println("getPlaces elapsed: " + (new Date().getTime() - t) + "ms");
+        return places;
     }
 
     @PostMapping
