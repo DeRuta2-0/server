@@ -11,4 +11,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     List<Place> findByDeletionFlag(Boolean deletionFlag);
 
+    Place findPlaceByIdAndRepository(Long id, ar.com.deruta.server.models.enums.Repository repository);
+
 }

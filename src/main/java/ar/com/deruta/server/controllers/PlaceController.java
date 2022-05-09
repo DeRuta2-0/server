@@ -2,6 +2,7 @@ package ar.com.deruta.server.controllers;
 
 import ar.com.deruta.server.models.Picture;
 import ar.com.deruta.server.models.Place;
+import ar.com.deruta.server.models.PlacePreview;
 import ar.com.deruta.server.models.PlaceType;
 import ar.com.deruta.server.models.enums.Repository;
 import ar.com.deruta.server.models.utils.Coordinates;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/place")
@@ -32,13 +34,22 @@ public class PlaceController {
     @Autowired
     private PlaceTypeService placeTypeService;
 
-    @GetMapping
-    public List<Place> getAll() {
-        System.out.println("getPlaces init");
+    @GetMapping("/getAll")
+    public List<PlacePreview> getAll() {
+        System.out.println("getAllPlaces init");
         long t = new Date().getTime();
-        List<Place> places = placeService.findByDeletionFlag(false);
-        System.out.println("getPlaces elapsed: " + (new Date().getTime() - t) + "ms");
+        List<PlacePreview> places = placeService.findByDeletionFlag(false).stream().map(p -> new PlacePreview(p.getId() + "-" + p.getRepository(), p.getName(), p.getType(), p.getCoordinates())).collect(Collectors.toList());
+        System.out.println("getAllPlaces elapsed: " + (new Date().getTime() - t) + "ms");
         return places;
+    }
+
+    @GetMapping("/get/{id}")
+    public Place get (@PathVariable String id) {
+        System.out.println("getPlace init id: " + id);
+        long t = new Date().getTime();
+        Place place = placeService.findPlaceByIdAndRepository(Long.valueOf(id.split("-")[0]), Repository.valueOf(id.split("-")[1]));
+        System.out.println("getPlace elapsed: " + (new Date().getTime() - t) + "ms");
+        return place;
     }
 
     @PostMapping
