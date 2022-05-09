@@ -60,8 +60,8 @@ public class UserController {
         return contacts;
     }
 
-    @PostMapping("/lastLocalization")
-    public void lastLocalization(@RequestBody Coordinates coordinates) {
+    @PostMapping("/updateLocation")
+    public void updateLocation(@RequestBody Coordinates coordinates) {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         if (a != null) {
             User loggedUser = userService.findByUsername((String)a.getPrincipal());
