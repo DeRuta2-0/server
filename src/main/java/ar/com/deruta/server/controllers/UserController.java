@@ -53,8 +53,8 @@ public class UserController {
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
         if (a != null) {
             User loggedUser = userService.findByUsername((String)a.getPrincipal());
-            contacts.add(new DataUser(loggedUser.getId(), loggedUser.getUsername(), loggedUser.getCoordinates(), false, loggedUser.getPictureLastUpdated().getTime()));
-            contacts.addAll(loggedUser.getContacts().stream().map(c -> new DataUser(c.getContact().getId(), c.getContact().getUsername(), c.getContact().getCoordinates(), c.getPictureUpdated(), c.getContact().getPictureLastUpdated() != null ? c.getContact().getPictureLastUpdated().getTime() : null)).collect(Collectors.toSet()));
+            contacts.add(new DataUser(loggedUser.getId(), loggedUser.getUsername(), loggedUser.getCoordinates(), false, loggedUser.getPictureLastUpdated().getTime(), loggedUser.getName()));
+            contacts.addAll(loggedUser.getContacts().stream().map(c -> new DataUser(c.getContact().getId(), c.getContact().getUsername(), c.getContact().getCoordinates(), c.getPictureUpdated(), c.getContact().getPictureLastUpdated() != null ? c.getContact().getPictureLastUpdated().getTime() : null, c.getContact().getName())).collect(Collectors.toSet()));
         }
         System.out.println("return getContacts");
         return contacts;

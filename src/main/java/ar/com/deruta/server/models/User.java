@@ -25,6 +25,9 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Column(nullable = false)
+    private String name;
+
     @Embedded
     private Coordinates coordinates;
 
@@ -122,5 +125,13 @@ public class User implements UserDetails {
 
     public void setPictureLastUpdated(Date pictureLastUpdated) {
         this.pictureLastUpdated = pictureLastUpdated;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
